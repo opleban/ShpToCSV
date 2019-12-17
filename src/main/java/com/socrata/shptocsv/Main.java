@@ -35,32 +35,19 @@ public class Main {
     public static void main(String[] args) throws IOException {
         String shpFilePath;
         String dbfFilePath;
+
         if (args.length == 1) {
             shpFilePath = args[0];
             run(shpFilePath);
-        }
-
-        if (args.length > 1) {
-            shpFilePath = args[0];
-            dbfFilePath = args[1];
-            run(shpFilePath,dbfFilePath);
-        }
-
-        else {
+        } else {
             throw new RuntimeException("Call with path to SHP file as single argument");
         }
-        run(shpFilePath, dbfFilePath);
+        run(shpFilePath);
     }
 
     private static void run(final String shpFilePath) throws IOException {
         LinkedList<LinkedList<String>> entries = extractRecords(shpFilePath);
         writeRecords(entries);
-    }
-
-    private static void run(final String shpFilePath, final String dbfFilePath) throws IOException {
-            LinkedList<LinkedList<String>> entries = extractRecords(shpFilePath);
-            readDBF(dbfFilePath);
-            writeRecords(entries);
     }
 
     private static LinkedList<LinkedList<String>> extractRecords(final String filePath) {
@@ -139,30 +126,5 @@ public class Main {
     private static DataStore openDataStore(final String filePath) throws IOException {
         final File file = new File(filePath);
         return new ShapefileDataStore(file.toURI().toURL());
-    }
-
-    private static void readDBF(final String filePath) throws IOException {
-        // To be honest I'm not sure what a DBF contains that the SHP file doesn't. But here's an example of how you
-        // could read in the values using geotools.
-        FileInputStream fis = new FileInputStream( filePath );
-        DbaseFileReader dbfReader =  new DbaseFileReader(fis.getChannel(),
-                false, StandardCharsets.ISO_8859_1);
-
-        int currRow = 0;
-        int limit = 10;
-        DbaseFileHeader dbfHeaders = dbfReader.getHeader();
-        System.out.println("Here are the headers: " + dbfReader.getHeader().toString());
-        while ( dbfReader.hasNext() && currRow < limit ){
-            final Object[] fields = dbfReader.readEntry();
-            int fieldLength = fields.length;
-            System.out.println("DBF row length is: " + fieldLength);
-            for (int i = 0; i < fields.length; i++) {
-                System.out.println("DBF field " + dbfHeaders.getFieldName(i) + "value is: " + fields[i].toString());
-            }
-            currRow ++;
-        }
-
-        dbfReader.close();
-        fis.close();
     }
 }
