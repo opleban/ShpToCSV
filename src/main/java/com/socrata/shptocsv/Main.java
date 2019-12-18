@@ -3,8 +3,6 @@ package com.socrata.shptocsv;
 import com.opencsv.CSVWriter;
 import org.geotools.data.DataStore;
 import org.geotools.data.shapefile.ShapefileDataStore;
-import org.geotools.data.shapefile.dbf.DbaseFileHeader;
-import org.geotools.data.shapefile.dbf.DbaseFileReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.ReprojectingFeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -14,10 +12,8 @@ import org.opengis.feature.simple.SimpleFeature;
 
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
